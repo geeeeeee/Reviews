@@ -1,0 +1,237 @@
+<%= form_for(@paper, :html => { :multipart => true }) do |f| %>
+  <% if @paper.errors.any? %>
+    <div id="error_explanation">
+      <h3><%= pluralize(@paper.errors.count, "error") %> prohibited this paper from being saved:</h3>
+
+      <ul>
+      <% @paper.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<li>Please enter all the indispensable matters except Fax. </li>
+<li>All author's emails write in the same order with all author's names. </li>
+<li>Write corresponding author in all author's names and email. </li>
+<li>After creating, you can change or delete your paper until confirmation. </li>
+<br><br>
+<h3>Author Information</h3>
+  <p>
+    <b><%= f.label :First_name %></b>
+    <%= f.text_field :first_name %>
+  </p>
+  <p>
+    <b><%= f.label :Family_name %></b>
+    <%= f.text_field :last_name %>
+  </p>
+  <p>
+    <b><%= f.label :Postal_address %></b>
+    <%= f.text_field :postal_address %>
+  </p>
+  <p>
+    <b><%= f.label :Postal_code %></b>
+    <%= f.text_field :postal_code %>
+  </p>
+  <p>
+    <b><%= f.label :Country %></b>
+  	<%= f.collection_select :nation, Paper::COUNTRYS, :to_s, :humanize, :value => 'South korea'%>
+
+  </p>
+  <p>
+    <b><%= f.label :Phone %></b>
+    <%= f.text_field :phone %>
+  </p>
+  <p>
+    <b><%= f.label :Fax %></b>
+    <%= f.text_field :fax %>
+  </p>
+  <p>
+    <b><%= f.label :Email %></b>
+    <%= f.text_field :email, :value => current_user.email %>
+  </p>
+  <p>
+    <b><%= f.label :Total_number_of_authors %></b>
+    <%= f.number_field :number_of_authors %>
+  </p>
+
+  <p>
+    <b><%= f.label :All_authors_name %>	 <br>(include Corresponding Author)<br><br>
+	<font color ="aaaaaa">
+	[Example] <br>
+	Leonardo da vinci <br>
+	Michelangelo Buonarro <br>
+	Raffaello Sanzio
+	</font>
+	</b>
+    <%= f.text_area :names_of_authors %>
+  </p>
+
+  <p>
+    <b><%= f.label :All_authors_Email %><br>(include Corresponding Author)<br><br>
+	<font color ="aaaaaa">
+	[Example] <br>
+	Leonardo@mail.com <br>
+	Michelangelo@mail.com <br>
+	Raffaello@mail.com
+	</font>
+	<br><br>
+	<font color="ff1111">
+	[Alarm]<br>
+	Write in the same order with all author's names
+	</font>
+	</b>
+    <%= f.text_area :emails_of_authors %>
+  </p>
+
+<br><br>  
+<h3>Manuscript Information</h3>
+  <p>
+    <b><%= f.label :Title %></b>
+    <%= f.text_field :title ,:size => "70"%>
+  </p>
+
+  <p>
+    <b><%= f.label :abstract %></b>
+    <%= f.text_area :abstract %>
+  </p>
+  <p>
+    <b><%= f.label :Type %></b>
+  	<%= f.collection_select :types, Paper::TYPES, :to_s, :humanize %></p>
+  </p>
+
+  <p>
+    <b><%= f.label :Section %></b>
+  	<%= f.collection_select :section, Paper::SECTIONS, :to_s, :humanize %></p>
+  </p>
+
+	<p>
+	  <b><%= f.label :Keywords %></b>
+	  <%= f.text_area :keywords%>
+	</p>
+
+
+<br><br>
+<h3> File attachment </h3>
+  	<% if @paper.coverletter_file_name %>
+		<p>
+		<li>Uploaded coverletter file name : <%= @paper.coverletter_file_name %></li>
+		</p>
+		<p>
+		<b><%= f.label :Change_coverletter %></b>
+		<%= f.file_field :coverletter %>	
+		</p>
+	<% else %>
+		<p>
+		<b><%= f.label :Coverletter %></b>
+		<%= f.file_field :coverletter %>
+		</p>	
+	<% end %>
+
+  	<% if @paper.manuscript_file_name %>
+		<p>
+		<li>Uploaded manuscript file name : <%= @paper.manuscript_file_name %></li>
+		</p>
+		<p>
+		<b><%= f.label :Change_manuscript %></b>
+		<%= f.file_field :manuscript %>	
+		</p>
+	<% else %>
+		<p>
+		<b><%= f.label :Manuscript %></b>
+		<%= f.file_field :manuscript %>	
+		</p>
+	<% end %>
+
+
+<br><br>
+<h3> Supplemental Files </h3>
+	<div class="newPaperclipFiles">
+		<%= f.fields_for :assets do |asset| %>
+			<% if asset.object.new_record? %>
+				<p><b>File</b><%= asset.file_field :image %>
+				<br></p>
+			<% end %>
+		<% end %>	
+	</div>
+	
+	
+  <br><br><br>
+  <% count = 0 %>
+  <div class="existingPaperclipFiles">
+	 <%= f.fields_for :assets do |asset| %>
+	
+          <% unless asset.object.new_record? %>
+			<% # upload images 글자 출력을 위한 처리 %>
+			<% if count == 0%>
+				<h2/> Uploaded Files </h3>
+				<ul>
+				<li> Click picture if you want to view original size of picture. </li>
+				<li> Check it if you want to delete an image. </li>
+				</ul>
+				<% count += 1%>
+			<% end %>
+			
+            <div class="thumbnail">
+				<p>
+				<% # 그림 파일 앞아에 파일명과 삭제 처리. %>
+				<b><%= f.label :File_name %></b> 
+				: <%= asset.object.image_file_name %>
+				<%= asset.check_box :_destroy %><br>
+				</p>
+			</div>
+			
+          <% end %>        
+   	  <% end %>
+   </div>
+
+	<br/><br/><br/>
+
+<% # Admin을 위한 메뉴 일반적으로 보이지 않는 커멘트와려 관련 된것을 수정 할 수 있다. 수정 할 수있다. %>
+<% if current_user.role == "Administrator" %>
+	<h3> Menu for administrator </h3>
+		<p>
+		<b><%= f.label :Reviewer_name1 %></b>
+		<%= f.text_field :examiner_name1 %>	
+		</p>
+		<p>
+		<b><%= f.label :Reviewer_name2 %></b>
+		<%= f.text_field :examiner_name2 %>	
+		</p>
+		<p>
+		<b><%= f.label :Reviewer_name3 %></b>
+		<%= f.text_field :examiner_name3 %>	
+		</p>
+		<p>
+		<b><%= f.label :Reviewer1%></b>
+		<%= f.text_field :examiner1 %>	
+		</p>
+		<p>
+		<b><%= f.label :Reviewer2%></b>
+		<%= f.text_field :examiner2%>	
+		</p>
+		<p>
+		<b><%= f.label :Reviewer3%></b>
+		<%= f.text_field :examiner3 %>	
+		</p>
+		
+		<p>
+		<b><%= f.label :comment1%></b>
+		<%= f.text_area :comment1 %>	
+		</p>
+		<p>
+		<b><%= f.label :comment2%></b>
+		<%= f.text_area :comment2 %>	
+		</p>
+		<p>
+		<b><%= f.label :comment3%></b>
+		<%= f.text_area :comment3 %>	
+		</p>
+
+<% end %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<br>

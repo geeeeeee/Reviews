@@ -1,0 +1,63 @@
+<h1>Need to assign</h1>
+<ul>
+<li>Assign reviewers and click 'Assign' button</li>
+<li>After assigned, you can't  change reviewer</li>
+<li>Clicking 'Assign' button will take a couple of seconds, because it sends some mails.</li> 
+
+</ul>
+</br>
+<% @unassigned.each do |paper| %>
+
+<table  CELLSPACING="10" CELLPADDING="3" style="table-layout:fixed;" >
+   <h3>
+   <tr>
+	<th width="400px" >Title</th>
+	<th width="50px" >Name</th>
+	<th width="100px" >Received</th>
+	<th>Reviewer 1</th>	
+	<th>Reviewer 2</th>	
+	<th>Reviewer 3</th>	
+	<th></th>
+  	</tr>
+	</h3>
+	
+  <tr>
+	<td width="400px" style="word-break:break-all;"><%= paper.title %></td>
+    <td><%= paper.last_name %><%= paper.first_name %></td>
+	<td><%= paper.receive_time.strftime("%Y-%m-%d") %></td>
+	<%= form_tag({:controller => "roles", :action => "make_assignment", :id => paper}, :method => "get") do  %>
+		<td ><%= select_tag(:examiner1 , options_for_select(@examiners, paper.examiner_name1))  %></td>
+		<td ><%= select_tag(:examiner2 , options_for_select(@examiners, paper.examiner_name2))  %></td>
+		<td><%= select_tag(:examiner3 , options_for_select(@examiners, paper.examiner_name3))  %></td>
+		<td ><%= submit_tag "Assign", :confirm =>"Are you sure?" %></td>
+	<% end %>
+  </tr>
+</table>
+	
+<% end %>
+
+
+<br><br>
+<h1>Assigned</h1>
+<table  CELLSPACING="10" CELLPADDING="3" style="table-layout:fixed;" >
+  <tr>
+	<th width="400px" >Title</th>
+	<th width="50px" >Name</th>
+	<th width="100px" >Received</th>
+	<th width="100px" >Status</th>
+	<th width="100px" >Reviewer1</th>
+	<th width="100px" >Reviewer2</th>
+	<th width="100px" >Reviewer3</th>
+  </tr>
+<% @assigned.each do |paper| %>
+  <tr>
+	<td width="400px" style="word-break:break-all;"><%= paper.title %></td>
+    <td><%= paper.last_name %><%= paper.first_name %></td>
+	<td><%= paper.receive_time.strftime("%Y-%m-%d") %></td>
+	<td><%= paper.status%></td>
+	<td><%= paper.examiner_name1.split(".")[1].lstrip  %></td>
+	<td><%= paper.examiner_name2.split(".")[1].lstrip  %></td>
+	<td><%= paper.examiner_name3.split(".")[1].lstrip  %></td>	
+  </tr>
+<% end %>
+</table>

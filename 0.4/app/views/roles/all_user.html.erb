@@ -1,0 +1,30 @@
+<h1>All users</h1>
+
+<table CELLSPACING="10" CELLPADDING="5">
+  <h3><tr> 
+    <th>User ID</th>
+	<th>Name</th>
+	<th>Email</th>
+    <th>Role</th>
+	<th></th>
+	<th></th>
+	<th></th> 
+	</tr></h3>
+<% @users.each do |user| %>
+  <tr>
+	<td><%= user.id %></td>	
+	<td><%= user.name %></td>
+    <td><%= user.email %></td>
+	<%= form_tag({:controller => "roles", :action => "change_role", :id => user}, :method => "get") do  %>
+		<% if current_user.role.eql?("Administrator")%>
+			<td><%= select_tag(:role , options_for_select(User::ROLES, user.role))  %></td>
+		<% elsif current_user.role.eql?("Chiefeditor")%>
+			<td><%= select_tag(:role , options_for_select(User::ROLES_FOR_EDITOR, user.role))  %></td>
+		<% else %>
+		<% end %>
+		<td><%= submit_tag "Change role" %>
+	<% end %>
+  </tr>
+<% end %>
+
+</table>

@@ -1,0 +1,46 @@
+<h1>All manuscripts</h1>
+
+<table  CELLSPACING="10" CELLPADDING="3" style="table-layout:fixed;" >
+ <h3> <tr>
+	<th width="400px" >Title</th>
+	<th width="50px" >Name</th>
+	<th width="100px" >Submitted</th>
+	<th width="100px" >Status</th>
+	
+	<% if current_user.role.eql?('Administrator')%>
+	<th></th>
+	<th></th>	 
+	<% end %>
+	
+	<th width="80px ">Manuscript</th>	
+	<th></th>	
+    <th></th>
+  </tr></h3>
+<% @papers.each do |paper| %>
+  <tr>
+	<td width="300px" style="word-break:break-all;"><%= paper.title %></td>
+    <td><%= paper.last_name %><%= paper.first_name %></td>
+	<td><%= paper.receive_time.strftime("%Y-%m-%d") %></td>
+	<td><%= paper.status %></td>
+	
+	<% # dynamic_form 이 필요. %>
+	<% # Administrator과 Chiefeditor만 수정이 가능 하게함. 나머지는 일반 텍스트 필드로 보이게함. %>
+	<% if current_user.role.eql?('Administrator')%>
+		<%= form_tag({:controller => "papers", :action => "change_status", :id => paper}, :method => "get") do  %>
+			<td ><%= select_tag(:status , options_for_select(Paper::STATUS, paper.status))  %></td>
+			<td ><%= submit_tag "Change" %></td>
+		<% end %>
+	<% end %>
+	
+	<td><%= link_to "Download", paper.manuscript.url %></td> 
+
+	<td><%= link_to 'Show',paper %></td>
+	
+	<% # Administrator만 삭제 가 능 . %>
+	<% if current_user.role.eql?('Administrator') %>
+	    <td><%= link_to 'Delete', paper, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+  </tr>
+
+<% end %>
+</table>

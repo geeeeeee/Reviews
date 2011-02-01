@@ -1,0 +1,46 @@
+<h1>My manuscripts</h1>
+<label>Your email: </label> <%= current_user.email %><br>
+<label>Number of submitted manuscripts: </label> <%= current_user.papers.size %><br>
+<label>Your role:</label> <%= current_user.role %><br>
+
+<br>
+
+<table>
+  <tbody><tr>
+    <th>Title</th>
+	<th>Firstname</th>
+    <th>Lastname</th>
+    <th>Email</th>   
+	<th>Received time</th>
+	<th>Status</th>
+	<th>Download manuscript </th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @papers.each do |paper| %>
+  <tr>
+	<td><%= paper.title %></td>
+    <td><%= paper.first_name %></td>
+    <td><%= paper.last_name %></td>
+    <td><%= paper.email %></td>   
+	<td><%= paper.receive_time %></td>
+	<td><%= paper.status %></td>  
+	<td><%= link_to "Download", paper.manuscript.url %></td> 
+    <td><%= link_to 'Show', paper %></td>
+    <td><%= link_to 'Edit', edit_paper_path(paper) %></td>
+    <td><%= link_to 'Delete', paper, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</tbody></table>
+
+<br>
+
+<%= link_to 'New submission', controller => "papers", :action => "authorship"  %>
+
+<% #투고자를 제외한 모든 사람은 모든 노문을수 볼 수 있음.  %>
+
+<% unless current_user.role == 'author'%>
+	<%= link_to "See all author's submitted manuscripts", :controller => "papers", :action => "all_papers" %>
+<% end %>

@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h3>Chief editor</h3>
+
+<table CELLSPACING="10" CELLPADDING="5">
+  <tr> 
+  <h4>
+    <th>User ID</th>
+	<th>Name</th>
+	<th>Email</th>
+	<th></th>
+  </h4>
+	</tr>
+<% @editors.each do |editor| %>
+  <tr>
+	<td><%= editor.id %></td>	
+	<td><%= editor.name %></td>
+    <td><%= editor.email %></td>
+  </tr>
+<% end %>
+
+</table>
+<br/><br/>
+<h3>Examiner </h3>
+
+<table CELLSPACING="10" CELLPADDING="5">
+  <tr> 
+  <h4>
+    <th>User ID</th>
+	<th>Name</th>
+	<th>Email</th>
+	<th></th>
+  </h4>
+	</tr>
+<% @examiners.each do |examiner| %>
+  <tr>
+	<td><%= examiner.id %></td>	
+	<td><%= examiner.name %></td>
+    <td><%= examiner.email %></td>
+  </tr>
+<% end %>
+
+</table>
+

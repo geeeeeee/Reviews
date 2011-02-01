@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Oral Biology Research Institute</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<%= stylesheet_link_tag :all %>
+	<%= javascript_include_tag :defaults %>
+	<%= csrf_meta_tag %>
+	
+</head>
+<body>
+<div id="outer">
+	<div id="header">
+		<h1><%= link_to "Oral Biology Research Institute", root_path %></h1>
+		<br/>
+		<h2>Online submission system</h2>
+		<p>
+		<% if user_signed_in? %>
+			Signed in as <%= current_user.email %> Not you?
+	    	<%= link_to "Sign out", destroy_user_session_path %>
+	  	<% else %>
+	    	<%= link_to "Register", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
+	  	<% end %>
+		</p>
+	</div>
+	<div id="menu">
+		<ul>
+			<li class="first"><%= link_to "Home", root_path %></li>
+			<li><a href="http://obri.chosun.ac.kr">Institute</a></li>
+
+			<% if user_signed_in? %>
+	
+				<% if current_user.role.eql?('Administrator')%>
+					<li><%= link_to 'All manuscripts',all_paper_papers_path %></li>	
+					<li><%= link_to "Manage users", roles_path %></li>
+				<% elsif current_user.role.eql?('Chiefeditor')%>
+					<li><%= link_to 'My manuscripts', papers_path %></li>
+					<li><%= link_to 'All manuscripts', filtered_for_editor_papers_path %></li>
+					<li><%= link_to 'Completed manuscripts', completed_paper_papers_path %></li>
+					<li><%= link_to "Users", roles_path %></il>
+				<% elsif current_user.role.eql?('Reviewer')%>
+					<li><%= link_to "Instruction", instructions_path %></li>
+					<li><%= link_to 'My manuscripts', papers_path %></li>
+					<li><%= link_to 'Review', review_papers_path %></li>	
+				<% else %>
+					<li><%= link_to "Instruction", instructions_path %></li>
+					<li><%= link_to 'My manuscripts', papers_path %></li>
+				<% end %>
+		
+			<% else %>
+				<li><%= link_to "Instruction", instructions_path %></li>			
+			<% end %>
+			
+			<%= yield(:head)%>
+		</ul>
+	</div>
+	<div id="content">
+		<div id="mainContentContainer">
+			
+			<div id="mainContent">
+				<p id="notice"><%= notice %></p>
+				<p id="alert"><%= alert %></p>
+				
+				
+				<%= yield %>
+			</div>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+	<div id="footer">
+		<p><font color="3355aa">The Reviews V 0.3.1 </font> Copyright &copy; 2011 www.boutiqueg.com Created by 20109868 </p>
+		<p>This site does not support Internet Explorer 6</p>
+		
+	</div>
+</div>
+</body>
+</html>

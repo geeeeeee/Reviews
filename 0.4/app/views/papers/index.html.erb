@@ -1,0 +1,53 @@
+<h1>My manuscripts</h1>
+
+<ul>
+<li>Your email :  <%= current_user.email %></li>
+<li>Number of submitted papers :  <%= current_user.papers.size %></li>
+<li>Your role : <%= current_user.role %></li>
+<li>After submitted, you can't change or delete your submitted manuscript and information</li>
+<li>Clicking "Submit" link will take a couple of seconds, because it sends some mails.</li> 
+</ul>
+</br>
+
+<table height ="50px" CELLSPACING="10" CELLPADDING="5" style="table-layout:fixed;">
+  <h3><tr>
+	
+    <th width="400px" >Title</th>
+	<th width="100px" >Submitted</th>
+	<th width="150px" >Status</th>
+	<th width="100px">Manuscript</th>
+	
+	<th ></th>
+	<th ></th>
+	<th ></th>
+	<th ></th>
+  </tr></h3>
+
+<% @papers.each do |paper| %>
+  <tr>
+	<td style="word-break:break-all;"><%= paper.title %></td>
+	<td text-align="center"><%= paper.receive_time.strftime("%Y-%m-%d")%></td>
+	<td><%= paper.status %></td>  
+	<td><%= link_to "Download", paper.manuscript.url %></td> 
+	<td><%= link_to 'Show', paper %></td>
+	<% if paper.status.eql?('On editing')%>
+		<td><%= link_to 'Edit', edit_paper_path(paper) %></td>
+    	<td><%= link_to 'Delete', paper, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td><%= link_to 'Submit',:confirm => 'Are you sure?', :controller => 'papers', :action =>"confirm_submission", :id => paper %></td>
+	<% elsif paper.status.eql?('Revision')%>
+		<td><%= link_to 'Edit', edit_paper_path(paper) %></td>
+		<td><%= link_to 'Resubmit',:confirm => 'Are you sure?', :controller => 'papers', :action =>"confirm_submission", :id => paper 
+%></td>
+		<td></td>
+	<% else%>
+		<td></td> <td></td> <td></td>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<h4>
+<%= link_to 'New submission', authorship_papers_path %>
+</h4>

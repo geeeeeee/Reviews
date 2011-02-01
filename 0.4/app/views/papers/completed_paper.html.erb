@@ -1,0 +1,37 @@
+
+<h1>Completed manuscripts</h1>
+<ul>
+<li>Your email :  <%= current_user.email %></li>
+<li>Your role : <%= current_user.role %></li>
+</ul>
+</br>
+
+
+<% @papers.each do |paper| %>
+<table  CELLSPACING="10" CELLPADDING="3" style="table-layout:fixed;" >
+  <h3><tr>
+	<th width="400px" >Title</th>
+	<th width="50px" >Name</th>
+	<th width="100px" >Received</th>
+	<th width="150px" >Status</th>	 
+	<th width="80px ">Manuscript</th>	
+	<th></th>	
+  </tr></h3>
+
+  <tr>
+	<td width="300px" style="word-break:break-all;"><%= paper.title %></td>
+    <td><%= paper.last_name %><%= paper.first_name %></td>
+	<td><%= paper.receive_time.strftime("%Y-%m-%d") %></td>
+	<td><%= paper.status %></td>  
+	<td><%= link_to "Download", paper.manuscript.url %></td> 
+	<td><%= link_to 'Show',paper %></td>
+
+  </tr>
+</table>
+	<p>
+	<h4>Result </h4>
+	</p>
+		<ul><blockquote>
+		<%= paper.result %>
+		</blockquote></ul><br><br>
+<% end %>

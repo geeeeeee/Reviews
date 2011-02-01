@@ -1,0 +1,215 @@
+<h3>File uploader Information</h3>
+
+<p>
+  <b>Name</b>
+  : <%= @paper.user.name %>
+</p>
+
+<p>
+  <b>E mail</b>
+  : <%= @paper.user.email %>
+</p>
+<br><br>
+<h3>Author Information</h3>
+
+<p>
+  <b>Firstname</b>
+  : <%= @paper.first_name %>
+</p>
+
+<p>
+  <b>Lastname</b>
+  : <%= @paper.last_name %>
+</p>
+
+<p>
+  <b>Postal address</b>
+  : <%= @paper.postal_address %>
+</p>
+
+<p>
+  <b>Postal code</b>
+  : <%= @paper.postal_code %>
+</p>
+
+<p>
+  <b>Country</b>
+  : <%= @paper.nation %>
+</p>
+
+<p>
+  <b>Phone</b>
+  : <%= @paper.phone %>
+</p>
+
+<p>
+  <b>Fax</b>
+  : <%= @paper.fax %>
+</p>
+
+<p>
+  <b>E-mail</b>
+  : <%= @paper.email %>
+</p>
+<p>
+  <b>Total number of authors</b>
+  : <%= @paper.number_of_authors %>
+</p>
+
+<p>
+  <b>All authors's name:</b>
+  : <%= @paper.names_of_authors %>
+</p>
+
+<p>
+  <b>All author's e-mail</b>
+  : <%= @paper.emails_of_authors %>
+</p>
+
+<br/><br/>
+<h3>Manuscript Information</h3>
+
+<p>
+  <b>Title</b>
+  : <%= @paper.title %>
+</p>
+
+
+
+<p>
+  <b>Type</b>
+  : <%= @paper.types %>
+</p>
+
+<p>
+  <b>Section</b>
+  : <%= @paper.section %>
+</p>
+
+<p>
+  <b>Keyword</b>
+  : <%= @paper.keywords %>
+</p>
+
+<p>
+  <b>Abstract</b><br>
+	<ul>
+  	<blockquote>
+	<%= @paper.abstract %>
+	</blockquote>
+	</ul>
+</p>
+
+<p>
+  <b>Status</b>
+  : <%= @paper.status %>
+</p>
+
+<p>
+  <b>Submitted time</b>
+  : <%= @paper.receive_time %>
+</p>
+
+<br/><br/>
+<h3> File attachment </h3>
+
+<p>
+ <b>Coveletter</b>
+ <% if @paper.coverletter_file_name%>
+ 	<r>: <%= @paper.coverletter_file_name%></r>
+ 	<%= link_to "Download", @paper.coverletter.url %>
+ <% else%>
+	<r>: Not uploaded </r>
+	</br>
+ <% end %>
+
+</p>
+<p>
+  <b>Manuscript</b>
+  <% if @paper.coverletter_file_name%>
+  	<r>: <%= @paper.manuscript_file_name%></r>
+	<%= link_to "Download", @paper.manuscript.url %>
+  <% else%>
+	<r>: Not uploaded </r>
+	</br>
+  <% end %>
+</p>
+
+<br><br>
+<h3> Supplemental Files </h3> 
+
+<%= form_for @paper do |f| %>
+  <%= f.error_messages %>
+  <%= f.fields_for :assets do |asset| %>
+  	<% unless asset.object.new_record? %>
+		<p>
+	    <b>File name</b>
+        <r>: <%= asset.object.image_file_name %></r>
+		<%= link_to "Download", asset.object.image.url %>
+		</p>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+<% # comment는 admi과 maineditod 에게만.%>
+<% if current_user.role.eql?("Administrator") or current_user.role.eql?("Chiefeditor") %>
+	<br/><br/>
+	<h3> Comments </h3>
+
+	<% @comments.each do |examiner, comment| %>
+		<p>
+		<b> <%= comment[0] %> </b><br>
+	  	<ul><blockquote>
+		<%= comment[1] %>		
+		</blockquote>
+		</ul>
+		</p>
+	<% end %>
+	</table>
+	
+	<% if @paper.result %>
+		<p>
+		<b> Final comment </b><br>
+	  	<ul><blockquote>
+		<%= @paper.result %>		
+		</blockquote>
+		</ul>
+		</p>
+	<% end %>
+	
+<% # 심사위원은 리뷰할때는 코멘트가 오여야 하지만, 자기논문에 대해서는 코멘트가 보이면 안됨. 그래서 이런것 처리. 당연히 코멘트가 있는 경우 즉 사이즈가 영이 아닌 경우에만 보여줌.%>
+<% elsif current_user.role.eql?("Reviewer") and @my_comment.size != 0 %>
+	<% unless current_user.papers.include?(@paper)%>
+		<br/><br/>
+		<h3> Comments </h3>
+		<p>
+		<b> <%= @my_comment[1] %> </b><br>
+	  	<ul><blockquote>
+		<%= @my_comment[3] %>		
+		</blockquote>
+		</ul>
+		</p>
+	<% end %>
+<% else %>
+<% end %>
+
+<br><br><br><br>
+<h4>
+<% if @paper.status.eql?('On editing') or current_user.role.eql?("Administrator") %>
+	<%= link_to 'Edit', edit_paper_path(@paper) %> |
+<% end %>
+
+
+<%= link_to 'My manuscripts', papers_path %> 
+
+<% if current_user.role.eql?('Chiefeditor')%>
+	| <%= link_to "All manuscripts", filtered_for_editor_papers_path %>
+<% elsif current_user.role.eql?('Administrator')%>
+	| <%= link_to "All manuscripts", all_paper_papers_path %>
+<% elsif current_user.role.eql?('Reviewer')%>
+	| <%= link_to "Review", review_papers_path %>
+<% else %>
+<% end %>
+
+</h4>

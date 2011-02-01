@@ -1,0 +1,36 @@
+
+<h3>Paper Information</h3>
+
+<p>
+  <b>Firstname</b>
+  : <%= @paper.first_name %>
+</p>
+
+<p>
+  <b>Lastname</b>
+  : <%= @paper.last_name %>
+</p>
+
+<p>
+  <b>Status</b>
+  : <%= @paper.status %>
+</p>
+
+<p>
+  <b>Title</b>
+  : <%= @paper.title %>
+</p>
+
+<br><br>
+<h3>Comment</h3>
+<p>
+  <b><%= @from_who %></b>
+  : <%= @info %>
+</p>
+
+
+<br><br><br>
+<p>
+<b> You can see more information on <%= link_to "OBRI", Emailer::HOMEPAGE %> </b>
+</p>
+<strong> <%= link_to "From Oral Biology Research Institute", Emailer::HOMEPAGE %> </strong>

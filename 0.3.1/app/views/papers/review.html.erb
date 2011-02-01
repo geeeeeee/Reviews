@@ -1,0 +1,92 @@
+
+<h1>Review</h1>
+<ul>
+<li>Your email :  <%= current_user.email %></li>
+<li>Your role : <%= current_user.role %></li>
+<li>After commented, you can't  change or delete your comment.</li>
+<li>Clicking "Make a comment" button will take a couple of seconds, because it sends some mails.</li> 
+
+</ul>
+</br>
+<% @papers.each do |paper,comment| %>
+
+
+
+<table  CELLSPACING="10" CELLPADDING="3" style="table-layout:fixed;" >
+  <h3><tr>
+
+	<th width="800px" >Title</th>
+	<th width="100px" >Name</th>
+	<th width="100px" >Submitted</th>
+	<th width="200px" >Status</th>
+	<th width="100px" >Manuscript</th>	
+	<th></th>	
+
+  </tr></h3>
+  <tr>
+	<td width="800px" style="word-break:break-all;"><%= paper.title %></td>
+    <td><%= paper.last_name %><%= paper.first_name %></td>
+	<td><%= paper.receive_time.strftime("%Y-%m-%d") %></td>
+	<td><%= paper.status%></td>
+	<td><%= link_to "Download", paper.manuscript.url %></td> 
+	<td><%= link_to 'Show',paper %></td>
+  </tr>
+</table>
+
+
+<p>
+<h4>Comment </h4>
+</p>
+
+<% # dynamic_form 이 필요. %>
+<% ########################################################################################### %>
+<% # 정말 이지 가장 중요한 파트이다.%>
+<% # 일단 remote 일 경우 params 해쉬로 접근이 가능 핟. %>
+<% # get, put, post 도 구별.ㅂ포스트는 새로 만드는 create 이다 . rake routes 해보면 알수 있다. %>
+<% # id 는 memeber와 collection의 차이아다. id도 params의 일부가 왼다. route.rb 참조. %>
+<% # 다른 방법은 잘안된다. form_tag나 form_for 로 submit_tag나 f.submit 만이 remote가 가능 하다.%>
+<% # tag 사용 법에 유의, 처음이 id 두번째가 value값(초기값 ), 세번째부터 옵션이다. %>
+<% # remote => ture 때니 모든 파라미터 접근 가능. 이게 무슨 일인가.. %>
+<% ########################################################################################### %>
+
+<%= form_tag({:controller => "papers", :action => "make_comment", :id => paper}, :method => "get") do  %>
+	<p>
+	<% if current_user.email.eql?(paper.examiner1) %>
+		<% unless paper.comment1.eql?("Not yet")%>
+			<ul><blockquote>
+			<%= paper.comment1 %>
+			</blockquote></ul><br><br>
+		<% else %>		
+			<div align="center">
+			<%= text_area_tag(:comment,"", :size =>"90x5") %><br><br>
+			<%= submit_tag "Make a comment", :confirm => "Are you sure?" %>
+			</div>
+		<% end %>
+	<% elsif current_user.email.eql?(paper.examiner2) %>
+		<% unless paper.comment2.eql?("Not yet") %>
+			<ul><blockquote>
+			<%= paper.comment2 %>
+			</blockquote></ul><br><br>			
+		<% else %>		
+			<div align="center">
+			<%= text_area_tag(:comment, "", :size =>"90x5") %><br><br>
+			<%= submit_tag "Make a comment", :confirm => "Are you sure?" %>
+			</div>
+		<% end %>	   	
+	<% elsif current_user.email.eql?(paper.examiner3) %>
+		<% unless paper.comment3.eql?("Not yet") %>
+			<ul><blockquote>
+			<%= paper.comment3 %>
+			</blockquote></ul><br><br>
+		<% else %>		
+			<div align="center">
+			<%= text_area_tag(:comment, "", :size =>"90x5") %><br><br>
+			<%= submit_tag "Make a comment", :confirm => "Are you sure?" %>
+			</div>
+		<% end %>
+	<% end %>
+	</p>
+<% end %>
+
+<% end %>
+

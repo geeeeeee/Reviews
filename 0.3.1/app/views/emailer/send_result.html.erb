@@ -1,0 +1,35 @@
+<h3>Paper Information</h3>
+
+<p>
+  <b>Firstname</b>
+  : <%= @paper.first_name %>
+</p>
+
+<p>
+  <b>Lastname</b>
+  : <%= @paper.last_name %>
+</p>
+
+<p>
+  <b>Title</b>
+  : <%= @paper.title %>
+</p>
+
+<br><br>
+<h3>Result</h3>
+<p>
+  <b>Result</b>
+  : <%= @paper.status %>
+</p>
+<p>
+  <b>Comment</b>
+	: <%= @paper.result %>
+</p>
+
+<br>
+if the result is revision, you need to edit your manuscript, and resubmit in OBRI online submission system
+<br><br>
+<p>
+<b> You can see more information on <%= link_to "OBRI", Emailer::HOMEPAGE %> </b>
+</p>
+<strong> <%= link_to "From Oral Biology Research Institute", Emailer::HOMEPAGE %> </strong>

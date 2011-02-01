@@ -1,0 +1,41 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  postal_address: MyString
+  postal_code: MyString
+  nation: MyString
+  phone: MyString
+  fax: MyString
+  email: MyString
+  title: MyString
+  number_of_authors: 1
+  names_of_authors: MyText
+  abstract: MyText
+  types: MyString
+  section: MyString
+  keywords: MyText
+  status: MyString
+  receive_time: 2011-01-19 17:21:32
+  user_id: MyString
+
+two:
+  first_name: MyString
+  last_name: MyString
+  postal_address: MyString
+  postal_code: MyString
+  nation: MyString
+  phone: MyString
+  fax: MyString
+  email: MyString
+  title: MyString
+  number_of_authors: 1
+  names_of_authors: MyText
+  abstract: MyText
+  types: MyString
+  section: MyString
+  keywords: MyText
+  status: MyString
+  receive_time: 2011-01-19 17:21:32
+  user_id: MyString

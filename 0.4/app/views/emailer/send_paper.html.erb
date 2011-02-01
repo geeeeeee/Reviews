@@ -1,0 +1,124 @@
+
+<p>
+  <b> You have to make a comment on paper (Go to "Review" menu) on <%= Emailer::HOMEPAGE %> </b>
+</p>
+
+<br>
+<h3>Author Information</h3>
+<p>
+  <b>Firstname</b>
+  : <%= @paper.first_name %>
+</p>
+
+<p>
+  <b>Lastname</b>
+  : <%= @paper.last_name %>
+</p>
+
+<p>
+  <b>Postal address</b>
+  : <%= @paper.postal_address %>
+</p>
+
+<p>
+  <b>Postal code</b>
+  : <%= @paper.postal_code %>
+</p>
+
+<p>
+  <b>Country</b>
+  : <%= @paper.nation %>
+</p>
+
+<p>
+  <b>Phone</b>
+  : <%= @paper.phone %>
+</p>
+
+<p>
+  <b>Fax</b>
+  : <%= @paper.fax %>
+</p>
+
+<p>
+  <b>E-mail</b>
+  : <%= @paper.email %>
+</p>
+<p>
+  <b>Total number of authors</b>
+  : <%= @paper.number_of_authors %>
+</p>
+
+<p>
+  <b>All authors's name:</b>
+  : <%= @paper.names_of_authors %>
+</p>
+
+<p>
+  <b>All author's e-mail</b>
+  : <%= @paper.emails_of_authors %>
+</p>
+
+<br/>
+<h3>Manuscript Information</h3>
+
+<p>
+  <b>Title</b>
+  : <%= @paper.title %>
+</p>
+
+<p>
+  <b>Type</b>
+  : <%= @paper.types %>
+</p>
+
+<p>
+  <b>Section</b>
+  : <%= @paper.section %>
+</p>
+
+<p>
+  <b>Keyword</b>
+  : <%= @paper.keywords %>
+</p>
+
+<p>
+  <b>Abstract</b>
+  : <%= @paper.abstract %>
+</p>
+
+<p>
+  <b>Status</b>
+  : <%= @paper.status %>
+</p>
+
+<p>
+  <b>Submitted time</b>
+  : <%= @paper.receive_time %>
+</p>
+
+<br/>
+<h3> File attachment </h3>
+
+<p>
+ <b>Coveletter</b>
+ <r>: <%= @paper.coverletter_file_name%></r>
+ <%= link_to "Download", Emailer::HOMEPAGE+@paper.coverletter.url %>
+</p>
+
+<p>
+  <b>Manuscript</b>	
+  <r>: <%= @paper.manuscript_file_name%></r>
+  <%= link_to "Download", Emailer::HOMEPAGE+@paper.manuscript.url %>
+</p>
+
+
+<p>
+  <b> Yon can see supplemental files of this manuscript at <%= Emailer::HOMEPAGE %> </b>
+</p>
+
+<br><br><br>
+<p>
+<b> You can see more information on <%= link_to "OBRI", Emailer::HOMEPAGE %> </b>
+</p>
+<strong> <%= link_to "From Oral Biology Research Institute", Emailer::HOMEPAGE %> </strong>

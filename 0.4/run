@@ -1,0 +1,2 @@
+#!/bin/sh
+rails s -b 115.68.23.82 -p 80 -e production
